@@ -4,16 +4,17 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import ListGroup from 'react-bootstrap/ListGroup';
 
 
-function SideNav(){
+function SideNav({onToggle}) {
 
     const [show, setShow] = useState(false);
 
     const handleShow = () =>{
       setShow(!show)
+      onToggle(!show);
     } ;
     return(
         <>      
-      <Offcanvas show={true} onHide={handleShow} placement='start' backdrop={false} scroll={true} style={{width: show ? '300px' : '100px', transition: 'width 0.5s'}}>
+      <Offcanvas show={true} onHide={handleShow} placement='start' backdrop={false} scroll={true} style={{width: show ? '25%' : '7%', transition: 'width 0.5s'}}>
         <Offcanvas.Header className='mb-4'>
           <Button className='btn btn-light ' onClick={handleShow}>
           <span className="material-symbols-outlined ">menu</span>
@@ -59,20 +60,20 @@ function SideNav(){
             <div>
 
               <ListGroup.Item action as='li' className='border border-0'>
-                <span className="material-symbols-outlined align-middle mx-3">
+                <span className="material-symbols-outlined align-middle mx-2">
                   history
                 </span>
                 {show && "Activity"}
                 
               </ListGroup.Item>
               <ListGroup.Item action as='li' className='border border-0'>
-                <span className="material-symbols-outlined align-middle mx-3">
+                <span className="material-symbols-outlined align-middle mx-2">
                   help
                 </span>
                 {show && "Help"}
               </ListGroup.Item>
               <ListGroup.Item action as='li' className='border border-0'>
-                <span className="material-symbols-outlined align-middle mx-3">
+                <span className="material-symbols-outlined align-middle mx-2">
                   settings
                 </span>
                 {show && "Settings"}

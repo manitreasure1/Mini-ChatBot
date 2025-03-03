@@ -5,7 +5,7 @@ function ChatBox(){
     return(
         <>
         
-        <div className='border rounded-4 p-2 mb-3 mx-5 position-fixed bottom-0 start-50 translate-middle-x ' style={{width:'60vw'}}>
+        <div className='border rounded-4 p-2 mb-3 bg-light sticky-bottom' style={{width:'100%'}}>
 
             <FloatingLabel controlId="message" label="Message">
                     <Form.Control
