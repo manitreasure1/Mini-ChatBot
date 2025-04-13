@@ -1,16 +1,17 @@
 from datetime import timedelta
 from typing import Any
 from pydantic_settings import BaseSettings, SettingsConfigDict
-
+from pydantic import ValidationError
 
 class Config(BaseSettings):
-    MAIL_SERVER = "smtp.gmail.com"
-    MAIL_PORT = 587
-    MAIL_USE_TLS = True
-    MAIL_USE_SSL = False
-    MAIL_USERNAME = "your_email@gmail.com"
-    MAIL_PASSWORD = "your_email_password"
-    MAIL_DEFAULT_SENDER = "your_email@gmail.com"
+    MAIL_SERVER: str = "smtp.gmail.com"
+    MAIL_PORT: int = 587
+    MAIL_USE_TLS: bool = True
+    MAIL_USE_SSL: bool = False
+    MAIL_USERNAME: str = "your_email@gmail.com"
+    MAIL_PASSWORD: str = "your_email_password"
+    MAIL_DEFAULT_SENDER:str = "your_email@gmail.com"
+
     REDIS_URL: str
     NEBUIS_API_KEY:str
     JWT_SECRET_KEY: str
@@ -22,7 +23,9 @@ class Config(BaseSettings):
     CACHE_TYPE: str = "RedisCache"
     CACHE_REDIS_URL: str | None
 
+
     def __init__(self, **kwargs):
+        
         super().__init__(**kwargs)
         if self.CACHE_REDIS_URL is None:
             self.CACHE_REDIS_URL = self.REDIS_URL
@@ -43,12 +46,11 @@ class Config(BaseSettings):
     )
 
 
-
-
-
 class TestConfig(BaseSettings):
     TESTING: bool =True
     SQLALCHEMY_DATABASE_URI: str 
 
-
-
+try:
+    Config() # type: ignore
+except ValidationError as exc:
+    print(repr(exc.errors()[0]['type']))

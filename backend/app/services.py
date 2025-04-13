@@ -123,23 +123,23 @@ class AuthServices:
 
 
 class ChatServive:
-    def send_message(self):
-        message_json = request.get_json()
-        message_validation = SendMessage(**message_json)
+    def send_message(self,message):
+        
+        message_validation = SendMessage(**message)
         message = str(message_validation).strip()
         clean_txt = text_correction(message)
 
-        resopnse = chatbot(clean_txt)
+        response = chatbot(clean_txt)
         
-        # user_id = get_current_user()
-        # if user_id:
-        #     user_history =ChatMessage(
-        #         message=message,  # type: ignore
-        #         response=response, # type: ignore
-        #         user_id=user_id # type: ignore
-        #     )
-        #     db.session.add(user_history)
-        #     db.session.commit()
-        #     db.session.refresh(user_history)
-        return resopnse
+        user_id = get_current_user()
+        if user_id:
+            user_history =ChatMessage(
+                message=clean_txt,  # type: ignore
+                response=response, # type: ignore
+                user_id=user_id # type: ignore
+            )
+            db.session.add(user_history)
+            db.session.commit()
+            db.session.refresh(user_history)
+        return response
 

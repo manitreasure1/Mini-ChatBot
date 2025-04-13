@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, make_response
+from flask import Blueprint, jsonify, make_response, request
 from flasgger import swag_from
 from app.services import AuthServices, UserServices, ChatServive
 from app.redis import jwt_redis_block_list
@@ -173,54 +173,21 @@ def logout():
 """
 THE CHAT ROUTES
 """
-
-
-
-@chat_bp.route('/send/', methods=['POST'])
 @socketio.on('send_message')
-@swag_from({
-    "parameters": [
-        {
-            "name": "body",
-            "in": "body",
-            "required": True,
-            "schema": {
-                "type": "object",
-                "properties": {
-                    "message": {
-                        "type": "string",
-                        "example": "Hello"
-                    }
-                }
-            }
-        }
-    ],
-    "responses": {
-        201: {
-            "description": "Message sent successfully",
-            "examples": {
-                "application/json": {
-                    "message": "Message sent successfully"
-                }
-            }
-        },
-        400: {
-            "description": "Invalid input",
-            "examples": {
-                "application/json": {
-                    "message": "Invalid input"
-                }
-            }
-        }
-    }
-})
 @jwt_required(optional=True)
-def send_message():
+def handle_send_message(data):
     try:
-        response = chat_service.send_message()
-        return make_response(response, 200)
+        client_message = data.get('message', '')
+        if not client_message:
+            emit('error', {'error': 'Message cannot be empty'})
+            return
+        bot_response = chat_service.send_message(client_message)
+        emit('receive_message', {'sender': 'client', 'message': client_message})
+        emit('receive_message', {'sender': 'bot', 'message': bot_response})
     except Exception as e:
-       raise e
+        emit('error', {'error': str(e)})
+
+
 
 
 @cache.memoize(30)
@@ -238,5 +205,4 @@ def chat_history():
 # @celery.task()
 # def send_mail():
 #     pass
-    
     

@@ -10,8 +10,8 @@ function ChatMessages({ message, isUser }) {
 
 <div className={`d-flex pb-5 ${isUser ? "justify-content-end" : "justify-content-start"}`}>
       <div
-        className={`p-3 rounded shadow-sm ${isUser ? "bg-primary text-white" : "bg-light text-dark"}`}
-        style={{ maxWidth: "47%" }}
+        className={`pt-2 px-2 shadow-sm ${isUser ? "bg-primary text-white" : "bg-light text-dark"}`}
+        style={{ maxWidth: "47%", borderRadius:"5px", lineHeight:"1.8rem" }}
       >
         <ReactMarkdown>{message}</ReactMarkdown>
       </div>

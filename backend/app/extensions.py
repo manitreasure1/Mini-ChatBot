@@ -12,7 +12,7 @@ from flask_compress import Compress
 from flask_caching import Cache
 from flask_mail import Mail
 
-config = Config()
+config = Config()  # type: ignore
 
 
 mail =Mail()
