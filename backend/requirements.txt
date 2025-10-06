@@ -1,0 +1,9 @@
+fastapi[standard]
+passlib
+pydantic-settings
+pyjwt
+sqlmodel
+websockets
+textblob
+asyncpg
+alembic
